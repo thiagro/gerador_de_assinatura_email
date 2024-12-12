@@ -77,7 +77,7 @@
 
     <br/><br/>
     <button type="button" onclick="generateSignature()">Gerar Assinatura</button>
-    <button type="button" onclick="exportSignature()">Exportar como HTML</button>
+    <!-- <button type="button" onclick="exportSignature()">Exportar como HTML</button> -->
     <button type="button" onclick="exportAsPng()">Exportar como PNG</button>
     <button type="button" onclick="zerar_campos()">Limpar</button>
   
@@ -152,14 +152,15 @@
       document.getElementById('generated-phone').innerText = `${phone} | ${mobile}`;
       document.getElementById('generated-email').innerText = email;
     }
-    function exportSignature() {
+    
+    /* function exportSignature() {
       const signature = document.getElementById('signature-output').innerHTML;
       const blob = new Blob([signature], { type: 'text/html' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'assinatura.html';
       link.click();
-    }
+    } */
 
     function exportAsPng() {
       const signatureElement = document.getElementById('signature-output');
