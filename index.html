@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Assinatura de E-mail</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* Estilo para remover o sublinhado e a cor do link */
+    td.email {
+      text-decoration: none;
+      color: inherit;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 300px;
+      padding: 5px;
+      margin-top: 5px;
+    }
+    nav {
+      background-color: #fff;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+    nav img {
+      height: 50px;
+      margin-right: 15px;
+    }
+    nav h1 {
+      color: #0e2b8d ;
+      font-size: 20px;
+      margin: 0;
+    }
+    h2 {
+      font-size:20px;
+      color: #0e2b8d ;
+    }
+    button{
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <img src="https://i.ibb.co/fG73FxC/Logo-BR-Assinatura.png" alt="Logo BR Assinatura">
+    <h1 style="text-align: center;">Gerador de Assinatura de E-mail</h1>
+  </nav>
+  
+  <form id="signature-form">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="sector">Setor:</label>
+    <input type="text" id="sector" name="sector" required>
+
+    <label for="phone">Telefone:</label>
+    <input type="text" id="phone" name="phone" required>
+
+    <label for="mobile">Celular:</label>
+    <input type="text" id="mobile" name="mobile" required>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required>
+
+    <br/><br/>
+    <button type="button" onclick="generateSignature()">Gerar Assinatura</button>
+    <button type="button" onclick="exportSignature()">Exportar como HTML</button>
+    <button type="button" onclick="exportAsPng()">Exportar como PNG</button>
+    <button type="button" onclick="zerar_campos()">Limpar</button>
+  
+  </form>
+
+  <div style="border: 1px solid black; border-radius: 10px;">
+  <h2 style="padding-left: 20px">Assinatura Gerada:</h2>
+  
+  <div id="signature-output" >
+    <style>
+      /* Estilo para remover o sublinhado e a cor do link */
+      td.email {
+        text-decoration: none;
+        color: inherit;
+      }
+    </style>
+
+    <table id="signature-model-1" style="font-size: 12px; font-family: Arial; width: 513px;">
+      <tbody>
+        <tr>
+          <td style="max-width: 100px; width: 100px;" valign="top">
+            <img class="picture" style="border-radius: 4px; width: 113px; height: 118px;" 
+                 src="https://i.ibb.co/fG73FxC/Logo-BR-Assinatura.png" 
+                 alt="Sua foto ou logo" />
+          </td>
+          <td style="padding: 0px 8px; width: 414px;">
+            <table style="color: #808080; height: 108px; width: 414px;">
+              <tbody>
+                <tr style="height: 18px;">
+                  <td id="generated-name" style="font-size: 14px; font-weight: bold; color: #0e2b8d; height: 18px; width: 404px;">
+                    <!-- Nome será exibido aqui -->
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td id="generated-sector" style="height: 18px; width: 404px;">
+                    <!-- Setor será exibido aqui -->
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td style="height: 18px; width: 404px;">BR Marinas</td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td id="generated-phone" class="email" style="height: 18px; width: 404px;">
+                    <!-- Telefone será exibido aqui -->
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td id="generated-email" style="height: 18px; width: 404px;">
+                    <!-- E-mail será exibido aqui -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br/>
+  </div>
+  </div>
+
+  <script>
+    function generateSignature() {
+      const name = document.getElementById('name').value;
+      const sector = document.getElementById('sector').value;
+      const phone = document.getElementById('phone').value;
+      const mobile = document.getElementById('mobile').value;
+      const email = document.getElementById('email').value;
+
+      document.getElementById('generated-name').innerText = name;
+      document.getElementById('generated-sector').innerText = sector;
+      document.getElementById('generated-phone').innerText = `${phone} | ${mobile}`;
+      document.getElementById('generated-email').innerText = email;
+    }
+    function exportSignature() {
+      const signature = document.getElementById('signature-output').innerHTML;
+      const blob = new Blob([signature], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'assinatura.html';
+      link.click();
+    }
+
+    function exportAsPng() {
+      const signatureElement = document.getElementById('signature-output');
+      html2canvas(signatureElement, { width: 330, height: 120 ,useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'assinatura.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+    function zerar_campos(){
+      
+      document.getElementById('generated-name').innerText = "";
+      document.getElementById('generated-sector').innerText = "";
+      document.getElementById('generated-phone').innerText = "";
+      document.getElementById('generated-email').innerText = "";
+
+      document.getElementById('name').value = "";
+      document.getElementById('sector').value = "";
+      document.getElementById('phone').value = "";
+      document.getElementById('mobile').value = "";
+      document.getElementById('email').value = "";
+    }
+  </script>
+</body>
+</html>
