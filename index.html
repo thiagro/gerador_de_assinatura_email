@@ -1,219 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de Crachá</title>
+  <title>Gerador de Assinatura de E-mail</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <style>
+    /* Estilo para remover o sublinhado e a cor do link */
+    td.email {
+      text-decoration: none;
+      color: inherit;
+    }
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f5f5f5;
+      margin: 20px;
     }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 90%;
-      max-width: 1000px;
-      background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      padding: 20px;
+    form {
+      margin-bottom: 20px;
     }
-
-    @media (min-width: 768px) {
-      .container {
-        flex-direction: row;
-      }
+    label {
+      display: block;
+      margin-top: 10px;
     }
-    @media (max-width: 400px){
-      .container {
-        padding-top: 120px;
-        padding-bottom: 120px;
-      }
-    }
-
-    .form-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .form-section h2 {
-      text-align: center;
-      margin: 0;
-    }
-
-    @media (max-width: 767px) {
-      .form-section h2 {
-        padding-top: 120px;
-      }
-    }
-
-    .form-section label {
-      font-weight: bold;
-    }
-
-    .form-section input, .form-section button {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-
-    .form-section button {
-      background-color: #007bff;
-      color: #fff;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .form-section button:hover {
-      background-color: #0056b3;
-    }
-
-    .badge-preview {
-      position: relative;
+    input {
       width: 300px;
-      height: 450px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    
-
-    .badge-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .photo {
-      position: absolute;
-      top: 155px;
-      width: 125px;
-      height: 170px;
-      background-color: #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .info {
-      position: absolute;
-      bottom: 60px;
-      width: 100%;
-      text-align: center;
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .info .name {
-      font-size: 18px;
-    }
-
-    .info .id {
-      font-size: 16px;
+      padding: 5px;
       margin-top: 5px;
     }
-
-    
+    nav {
+      background-color: #fff;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+    nav img {
+      height: 50px;
+      margin-right: 15px;
+    }
+    nav h1 {
+      color: #0e2b8d ;
+      font-size: 20px;
+      margin: 0;
+    }
+    h2 {
+      font-size:20px;
+      color: #0e2b8d ;
+    }
+    button{
+      margin: 5px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Formulário -->
-    <div class="form-section">
-      <h2>Gerador de crachá</h2>
-      <label for="name">Nome:</label>
-      <input type="text" id="name" placeholder="Digite o nome">
+  <nav>
+    <img src="./Logo.png"  alt="Logo BR Assinatura">
+    <h1 style="text-align: center;">Gerador de Assinatura de E-mail</h1>
+  </nav>
+  
+  <form id="signature-form">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name" required>
 
-      <label for="id">Matrícula:</label>
-      <input type="text" id="id" placeholder="Digite a matrícula">
+    <label for="sector">Setor:</label>
+    <input type="text" id="sector" name="sector" required>
 
-      <input type="file" accept="image/*" id="foto" >
+    <label for="phone">Telefone:</label>
+    <input type="text" id="phone" name="phone" required>
 
-      <button onclick="generateBadge()">Ver prévia</button>
-      <button onclick="exportAsPng()">Exportar como PNG</button>
-    </div>
+    <label for="mobile">Celular:</label>
+    <input type="text" id="mobile" name="mobile" required>
 
-    <!-- Preview do Crachá -->
-    <div class="badge-preview" id="badge-preview">
-      <img id="badge-background" src="./cracha.png" alt="Imagem de fundo do crachá">
-      <div class="photo" id="photo-preview"><img id="photo-img" alt=""></div>
-      <div class="info">
-        <div class="name" id="name-preview">Nome</div>
-        <div class="id" id="id-preview">Matrícula</div>
-      </div>
-    </div>
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required>
 
+    <br/><br/>
+    <button type="button" onclick="generateSignature()">Gerar Assinatura</button>
+    <!-- <button type="button" onclick="exportSignature()">Exportar como HTML</button> -->
+    <button type="button" onclick="exportAsPng()">Exportar como PNG</button>
+    <button type="button" onclick="zerar_campos()">Limpar</button>
+  
+  </form>
+
+  <div style="border: 1px solid black; border-radius: 10px;">
+  <h2 style="padding-left: 20px">Assinatura Gerada:</h2>
+  
+  <div id="signature-output" >
+    <style>
+      /* Estilo para remover o sublinhado e a cor do link */
+      td.email {
+        text-decoration: none;
+        color: inherit;
+      }
+    </style>
+
+    <table id="signature-model-1" style="font-size: 12px; font-family: Arial; width: 513px;">
+      <tbody>
+        <tr>
+          <td style="max-width: 100px; width: 100px;" valign="top">
+            <img class="picture" style="border-radius: 4px; width: 113px; height: 118px;" 
+                 src="./Logo.png" 
+                 alt="Sua foto ou logo" />
+          </td>
+          <td style="padding: 0px 8px; width: 414px;">
+            <table style="color: #808080; height: 108px; width: 414px;">
+              <tbody>
+                <tr style="height: 18px;">
+                  <td id="generated-name" style="font-size: 14px; font-weight: bold; color: #0e2b8d; height: 18px; width: 404px;">
+                    <!-- Nome será exibido aqui -->
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td id="generated-sector" style="height: 18px; width: 404px;">
+                    <!-- Setor será exibido aqui -->
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td style="height: 18px; width: 404px;">BR Marinas</td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td id="generated-phone" class="email" style="height: 18px; width: 404px;">
+                    <!-- Telefone será exibido aqui -->
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td id="generated-email" style="height: 18px; width: 404px;">
+                    <!-- E-mail será exibido aqui -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br/>
+  </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
-    const nameInput = document.getElementById('name');
-    const idInput = document.getElementById('id');
-    const photoUpload = document.getElementById('foto');
+    function generateSignature() {
+      const name = document.getElementById('name').value;
+      const sector = document.getElementById('sector').value;
+      const phone = document.getElementById('phone').value;
+      const mobile = document.getElementById('mobile').value;
+      const email = document.getElementById('email').value;
 
-    const namePreview = document.getElementById('name-preview');
-    const idPreview = document.getElementById('id-preview');
-    const photoPreview = document.getElementById('photo-img');
+      document.getElementById('generated-name').innerText = name;
+      document.getElementById('generated-sector').innerText = sector;
+      document.getElementById('generated-phone').innerText = `${phone} | ${mobile}`;
+      document.getElementById('generated-email').innerText = email;
+    }
+    
+    /* function exportSignature() {
+      const signature = document.getElementById('signature-output').innerHTML;
+      const blob = new Blob([signature], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'assinatura.html';
+      link.click();
+    } */
 
-    // Atualiza o nome no crachá em tempo real
-    nameInput.addEventListener('input', () => {
-      namePreview.textContent = nameInput.value || 'Nome';
-    });
-
-    // Atualiza a matrícula no crachá em tempo real
-    idInput.addEventListener('input', () => {
-      idPreview.textContent = idInput.value || 'Matrícula';
-    });
-
-    // Atualiza a foto no crachá em tempo real
-    photoUpload.addEventListener('change', () => {
-      const file = photoUpload.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          photoPreview.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // Script para exportar como PNG
     function exportAsPng() {
-      const badgePreview = document.getElementById('badge-preview');
-      html2canvas(badgePreview, {
-        allowTaint: true,
-        useCORS: true
-      })
-      .then(function(canvas) {
-        const image = canvas.toDataURL('image/png');
+      const signatureElement = document.getElementById('signature-output');
+      html2canvas(signatureElement, { width: 330, height: 120 ,useCORS: true }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'cracha.png';
-        link.href = image;
+        link.download = 'assinatura.png';
+        link.href = canvas.toDataURL('image/png');
         link.click();
-      })
-      .catch(function(error) {
-        console.error('Erro ao gerar PNG:', error);
       });
+    }
+    function zerar_campos(){
+      
+      document.getElementById('generated-name').innerText = "";
+      document.getElementById('generated-sector').innerText = "";
+      document.getElementById('generated-phone').innerText = "";
+      document.getElementById('generated-email').innerText = "";
+
+      document.getElementById('name').value = "";
+      document.getElementById('sector').value = "";
+      document.getElementById('phone').value = "";
+      document.getElementById('mobile').value = "";
+      document.getElementById('email').value = "";
     }
   </script>
 </body>
