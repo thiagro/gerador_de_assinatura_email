@@ -51,6 +51,7 @@
     button{
       margin: 5px;
     }
+   
   </style>
 </head>
 <body>
@@ -76,7 +77,7 @@
     <input type="email" id="email" name="email" required>
 
     <br/><br/>
-    <button type="button" onclick="generateSignature()">Gerar Assinatura</button>
+    <!-- <button type="button" onclick="generateSignature()">Gerar Assinatura</button> -->
     <!-- <button type="button" onclick="exportSignature()">Exportar como HTML</button> -->
     <button type="button" onclick="exportAsPng()">Exportar como PNG</button>
     <button type="button" onclick="zerar_campos()">Limpar</button>
@@ -120,8 +121,11 @@
                   <td style="height: 18px; width: 404px;">BR Marinas</td>
                 </tr>
                 <tr style="height: 18px;">
-                  <td id="generated-phone" class="email" style="height: 18px; width: 404px;">
+                  <td id="generated-phone"  style="height: 18px;width:50px;">
                     <!-- Telefone será exibido aqui -->
+                  </td>
+                  <td id="generated-mobile"  style="height: 18px;width:100px;">
+                    <!-- celular vai aparecer aqui -->
                   </td>
                 </tr>
                 <tr style="height: 18px;">
@@ -140,20 +144,39 @@
   </div>
 
   <script>
-    function generateSignature() {
-      const name = document.getElementById('name').value;
-      const sector = document.getElementById('sector').value;
-      const phone = document.getElementById('phone').value;
-      const mobile = document.getElementById('mobile').value;
-      const email = document.getElementById('email').value;
-      let imageTag = mobile ? `<img src="logo_whatsapp.png" alt="Celular" style="width: 15px; height: 15px; margin-left: 5px;">` : "";
+    const phone = document.getElementById('phone');  // Supondo que você tenha o campo 'phone' no seu HTML
+    const mobile = document.getElementById('mobile');  // O campo 'mobile' é o campo de input
+    const name = document.getElementById('name');
+    const sector = document.getElementById('sector');  
+    const email = document.getElementById('email');
 
-      
-      document.getElementById('generated-name').innerText = name;
-      document.getElementById('generated-sector').innerText = sector;
-      document.getElementById('generated-phone').innerHTML = `${phone} | ${mobile}${imageTag}`;
-      document.getElementById('generated-email').innerText = email;
-    }
+    const generated_name = document.getElementById('generated-name');
+    const generated_sector = document.getElementById('generated-sector');
+    const generated_phone = document.getElementById('generated-phone');
+    const generated_mobile = document.getElementById('generated-mobile');
+    const generated_email = document.getElementById('generated-email');
+
+    name.addEventListener('input', () => {
+      generated_name.textContent = name.value;
+    });
+    sector.addEventListener('input', () => {
+      generated_sector.textContent = sector.value;
+    }); 
+
+    phone.addEventListener('input', () => {
+      generated_phone.textContent = phone.value;
+    }); 
+
+    mobile.addEventListener('input', () => {
+        const imageTag = mobile.value ? `<img src="logo_whatsapp.png" alt="Celular" style="width: 15px; height: 15px; margin-left: 5px;">` : "";
+        document.getElementById('generated-mobile').innerHTML = ` | ${mobile.value}${imageTag}`;
+    });
+
+    email.addEventListener('input', () => {
+      generated_email.textContent = email.value;
+    });
+
+
     
     /* function exportSignature() {
       const signature = document.getElementById('signature-output').innerHTML;
@@ -173,6 +196,11 @@
         link.click();
       });
     }
+
+
+
+
+    
     function zerar_campos(){
       
       document.getElementById('generated-name').innerText = "";
