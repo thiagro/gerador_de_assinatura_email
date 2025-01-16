@@ -146,10 +146,12 @@
       const phone = document.getElementById('phone').value;
       const mobile = document.getElementById('mobile').value;
       const email = document.getElementById('email').value;
+      let imageTag = mobile ? `<img src="logo_whatsapp.png" alt="Celular" style="width: 15px; height: 15px; margin-left: 5px;">` : "";
 
+      
       document.getElementById('generated-name').innerText = name;
       document.getElementById('generated-sector').innerText = sector;
-      document.getElementById('generated-phone').innerText = `${phone} | ${mobile}`;
+      document.getElementById('generated-phone').innerText = `${phone} | ${mobile}${imageTag}`;
       document.getElementById('generated-email').innerText = email;
     }
     
@@ -164,7 +166,7 @@
 
     function exportAsPng() {
       const signatureElement = document.getElementById('signature-output');
-      html2canvas(signatureElement, { width: 330, height: 120 ,useCORS: true }).then(canvas => {
+      html2canvas(signatureElement, { width: 440, height: 120 ,useCORS: true }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'assinatura.png';
         link.href = canvas.toDataURL('image/png');
