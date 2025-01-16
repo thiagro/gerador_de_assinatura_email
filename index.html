@@ -7,95 +7,109 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    /* Estilo para remover o sublinhado e a cor do link */
-    td.email {
-      text-decoration: none;
-      color: inherit;
-    }
     body {
       font-family: Arial, sans-serif;
+      
       margin: 20px;
     }
     form {
-      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
+      align-items: center;    
+      margin-bottom: 20px;    
+      text-align: center;
     }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
+    
     input {
+      
       width: 300px;
       padding: 5px;
-      margin-top: 5px;
+      margin-top: 10px;
     }
     nav {
-      background-color: #fff;
-      padding: 10px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
+      display: flex;          
+      justify-content: center;
+      align-items: center;    
+      gap: 15px;  
+      padding-bottom: 20px;   
     }
+
     nav img {
       height: 50px;
-      margin-right: 15px;
+      margin-right:0px;           
     }
+
     nav h1 {
-      color: #0e2b8d ;
-      font-size: 20px;
-      margin: 0;
+      font-size: 20px;        
+      color: #0e2b8d;        
+      margin: 0;              
     }
+
+    
     h2 {
       font-size:20px;
       color: #0e2b8d ;
     }
     button{
       margin: 5px;
+      padding: 5px;
+      background-color: #0e2b8d;
+      border-radius: 5px;
+      color:white;
+      border: #0e2b8d;
     }
-   
+    .centralizado {
+  display: flex;
+  justify-content: center;    /* Centraliza horizontalmente */
+  align-items: center;        /* Alinha verticalmente no centro */
+}
+footer {
+  
+  color: #555;
+  text-align: center;
+  padding: 5px;
+  font-size: 12px;
+}
   </style>
 </head>
 <body>
   <nav>
     <img src="./Logo.png"  alt="Logo BR Assinatura">
-    <h1 style="text-align: center;">Gerador de Assinatura de E-mail</h1>
+    <h1 style="text-align: center;">Criador e gerador de Assinatura de E-mail</h1>
   </nav>
   
   <form id="signature-form">
-    <label for="name">Nome:</label>
-    <input type="text" id="name" name="name" required>
+    
+    <input type="text" id="name" name="name" required placeholder="Nome completo">
 
-    <label for="sector">Setor:</label>
-    <input type="text" id="sector" name="sector" required>
+   
+    <input type="text" id="sector" name="sector" required placeholder="Setor"> 
 
-    <label for="phone">Telefone:</label>
-    <input type="text" id="phone" name="phone" required>
+    
+    <input type="text" id="phone" name="phone" required placeholder="Telefone">
 
-    <label for="mobile">Celular:</label>
-    <input type="text" id="mobile" name="mobile" required>
+    
+    <input type="text" id="mobile" name="mobile" required placeholder="Celular">
 
-    <label for="email">E-mail:</label>
-    <input type="email" id="email" name="email" required>
+   
+    <input type="email" id="email" name="email" required placeholder="E-mail">
 
     <br/><br/>
     <!-- <button type="button" onclick="generateSignature()">Gerar Assinatura</button> -->
     <!-- <button type="button" onclick="exportSignature()">Exportar como HTML</button> -->
-    <button type="button" onclick="exportAsPng()">Exportar como PNG</button>
-    <button type="button" onclick="zerar_campos()">Limpar</button>
-  
+    <div class="centralizado"> 
+      <button type="button" onclick="exportAsPng()">Exportar como PNG</button>
+      <button type="button" onclick="zerar_campos()">Limpar</button>
+    </div>
+    
   </form>
-
-  <div style="border: 1px solid black; border-radius: 10px;">
+  <div class="centralizado">
+  <div style="border: 1px solid black; border-radius: 10px; width: 350px; ">
   <h2 style="padding-left: 20px">Assinatura Gerada:</h2>
   
   <div id="signature-output" >
-    <style>
-      /* Estilo para remover o sublinhado e a cor do link */
-      td.email {
-        text-decoration: none;
-        color: inherit;
-      }
-    </style>
-
+    
     <table id="signature-model-1" style="font-size: 12px; font-family: Arial; width: 513px;">
       <tbody>
         <tr>
@@ -121,12 +135,11 @@
                   <td style="height: 18px; width: 404px;">BR Marinas</td>
                 </tr>
                 <tr style="height: 18px;">
-                  <td id="generated-phone"  style="height: 18px;width:50px;">
-                    <!-- Telefone será exibido aqui -->
+                  <td >
+                    <a id="generated-phone"></a>
+                    <a id="generated-mobile"></a>
                   </td>
-                  <td id="generated-mobile"  style="height: 18px;width:100px;">
-                    <!-- celular vai aparecer aqui -->
-                  </td>
+                  
                 </tr>
                 <tr style="height: 18px;">
                   <td id="generated-email" style="height: 18px; width: 404px;">
@@ -142,10 +155,14 @@
     <br/>
   </div>
   </div>
+</div>
 
+<footer>
+  &copy; Desenvolvido por </sup>Thiago Ribeiro<sup>™</sup>
+</footer>
   <script>
-    const phone = document.getElementById('phone');  // Supondo que você tenha o campo 'phone' no seu HTML
-    const mobile = document.getElementById('mobile');  // O campo 'mobile' é o campo de input
+    const phone = document.getElementById('phone');
+    const mobile = document.getElementById('mobile');  
     const name = document.getElementById('name');
     const sector = document.getElementById('sector');  
     const email = document.getElementById('email');
@@ -176,17 +193,6 @@
       generated_email.textContent = email.value;
     });
 
-
-    
-    /* function exportSignature() {
-      const signature = document.getElementById('signature-output').innerHTML;
-      const blob = new Blob([signature], { type: 'text/html' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'assinatura.html';
-      link.click();
-    } */
-
     function exportAsPng() {
       const signatureElement = document.getElementById('signature-output');
       html2canvas(signatureElement, { width: 440, height: 120 ,useCORS: true }).then(canvas => {
@@ -196,13 +202,7 @@
         link.click();
       });
     }
-
-
-
-
-    
-    function zerar_campos(){
-      
+    function zerar_campos(){ 
       document.getElementById('generated-name').innerText = "";
       document.getElementById('generated-sector').innerText = "";
       document.getElementById('generated-phone').innerText = "";
