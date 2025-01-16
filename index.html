@@ -195,7 +195,7 @@ footer {
 
     function exportAsPng() {
       const signatureElement = document.getElementById('signature-output');
-      html2canvas(signatureElement, { width: 440, height: 120 ,useCORS: true }).then(canvas => {
+      html2canvas(signatureElement, { width: 400, height: 120 ,useCORS: true }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'assinatura.png';
         link.href = canvas.toDataURL('image/png');
